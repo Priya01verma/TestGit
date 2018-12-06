@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <title>Sort Table</title>
+        <h1>Sort Table by clicking on header name</h1>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    </head>
+    <body>
+        <style>
+            table ,td,th
+            {
+                border :  1px solid black;
+            }
+        </style>
+        <br>
+        <table id = "myTable">
+                <tr>
+                    <th>Roll Number <i class="fa fa-sort-numeric-asc" onclick ="sortTable(0); changeIcon(this);"></i></th>
+                    <th>First Name <i class="fa fa-sort-alpha-asc" aria-hidden="true" onclick = "sortTable(1);changeIconFirst(this)"></i></th>
+                    <th>Last Name <i class="fa fa-sort-alpha-asc" aria-hidden="true" onclick = "sortTable(2);changeIconFirst(this)"></i></th>
+                </tr>
+            <tr>
+                <td>1</td>
+                <td>Priya</td>
+                <td>Verma</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Ritu</td>
+                <td>Rajput</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Shivani</td>
+                <td>Verma</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Amar</td>
+                <td>Sharma</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Bhuvan</td>
+                <td>Bam</td>
+            </tr>
+        </table>
+        <br>
+       
+            <script>
+             function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("myTable");
+  switching = true;
+  dir = "asc"; 
+  while (switching) {
+    switching = false;
+    rows = table.rows;
+    
+    for (i = 1; i < (rows.length - 1); i++) {
+      
+      shouldSwitch = false;
+      
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+        
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      
+      switchcount ++;      
+    } else {
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+                function changeIcon(x)
+                {
+                    // $(".fa fa-sort-numeric-asc").show();
+                    // $(".fa fa-sort-numeric-desc").hide();
+                
+                     x.classList.toggle("fa-sort-numeric-desc");
+                }
+                function changeIconFirst(x)
+                {
+                    x.classList.toggle("fa-sort-alpha-desc");
+                }
+            </script>
+    </body>
+</html>
