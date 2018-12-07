@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <title>
+            Search
+        </title>
+        <h2>Searching a table</h2>
+    </head>
+    <style>
+       table, th, td 
+        {
+            border :  1px solid black;
+        }
+    </style>
+    <body>
+        <table id ="myTable">
+        <tr>
+        <th>Roll No.</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Course</th>
+    </tr>
+    <tr>
+        <td> </td>
+        <td><input type ="text" id = "myInput" onkeyup="mySearchFunctn(this.id)" placeholder="search by first name...."> </td>
+        <td><input type ="text" id = "myInput1" onkeyup="mySearchFunctn(this.id)" placeholder="search by last name...."> </td>
+        <td><input type ="text" id = "myInput2" onkeyup="mySearchFunctn(this.id)" placeholder="search by course...."> </td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>Priya</td>
+        <td>Verma</td>
+        <td>BCA</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Shivani</td>
+        <td>Sharma</td>
+        <td>Diploma</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>Ritu</td>
+        <td>Rajput</td>
+        <td>Artificial Intelligence</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>Siraj</td>
+        <td>Alam</td>
+        <td>Computer Science</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>Vandana</td>
+        <td>Saun</td>
+        <td>MBA</td>
+    </tr>
+</table>
+    </body>
+    <script>
+        function mySearchFunctn(n)
+        {
+            var inp, flt,txtValue,table,tr,td,i,j;
+            inp = document.getElementById(n);
+            flt = inp.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for(i=2;i<tr.length;i++)
+            {
+                td = tr[i].getElementsByTagName("td")[1];
+                if(td)
+                {
+                    txtValue = td.textContent || td.innerText;
+                    if(txtValue.toUpperCase().indexOf(flt) > -1)
+                    {
+                        tr[i].style.display= " ";
+                    }
+                    else
+                    {
+                        tr[i].style.display= "none";
+                    }
+                }
+            }
+        }
+    </script>
+</html>
