@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Form</title>
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+   
+<!-- body code goes here -->
+
+<div class="container" style=" padding: 30px; border: 1px solid #242424; border-radius: 8px; margin-top: 50px">
+   <form action="form.php" method="post">
+    <div class="form-group">
+      <label for="inputemail">Email</label>
+      <input type="email" name="mail" class="form-control"  id="inputemail" placeholder="Example@mail.com" required>
+      <small class="text-muted">We never share your email to anyone !</small>
+      <div class="invalid-feedback">Example invalid feedback text</div>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="name">First Name</label>
+          <input type="text" name="firstname" class="form-control" placeholder="First Name" required>
+          <small class="text-muted">E.g - Farukh</small> </div>
+      </div>
+     <!-- <div class="col">
+        <div class="form-group">
+          <label for="LAstname">Last Name</label>
+          <input type="text" class="form-control" placeholder="Last Name" required>
+          <small class="text-muted">e.g - Saifi</small> </div>
+      </div>-->
+    </div>
+    <div class="form-group">
+      <label for="password1">Password</label>
+      <input type="password" name="password" class="form-control" id="password1" placeholder="password" required>
+      <small class="text-muted">Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, </small> </div>
+    <!--<div class="form-group">
+      <label for="paid">Account type</label>
+      <select class="custom-select" required>
+        <option selected>Open this select menu</option>
+        <option value="1">Free</option>
+        <option value="2">Basic</option>
+        <option value="3">premium</option>
+      </select>
+    </div>-->
+   <!-- <div class=" form-group"  >
+      <input type="file" id="uploadfile" >
+    </div>
+    <div class="form-group">
+      <input type="checkbox" id="agreebox" required>
+      <label for="agreebox">Agree Trem and Condition</label>
+    </div>-->
+    <div class="form-group">
+      <button class="btn btn-success ">
+      Submit</button>
+    </div>
+  </form>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-3.2.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.js"></script>
+</body>
+</html>
+  <option value="">---select---</option>
+  <option value="1">India</option>
+  <option value="2">Australia</option>
+  <option value="3">USA</option>
+  <option value="4">China</option>
+<?php
+$arr=array("Azad","Siraj","Priya","Ritu","Megha");
+$arrlen=count($arr);
+for($i=0;$i<$arrlen;$i++)
+{
+    echo $arr[$i];
+    echo "<br>";
+}
+?>
