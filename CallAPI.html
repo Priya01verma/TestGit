@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Calling API</title>
+    
+        </head>
+<body>
+    <p id="demo"></p>
+    <script>
+const Http = new XMLHttpRequest();
+const url = 'https://reqres.in/api/users?page=2'; 
+Http.open("GET",url);
+Http.send();
+Http.onreadystatechange= function() 
+{
+    if(this.readyState==4 && this.status==200)
+    {
+    console.log(Http.responseText)
+    }
+}
+var txt = '{"Data":[' + 
+'{"id":4,"first_name":"Eve","last_name":"holt","avator": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg"},' +
+'{"id":5,"first_name":"Charles","last_name":"Morris","avator": "https://s3.amazonaws.com/uifaces/faces/twitter/stephenmoon/128.jpg"},' + 
+'{"id":6,"first_name":"Tracey","last_name":"Ramos","avator":  "https://s3.amazonaws.com/uifaces/faces/twitter/bigmancho/128.jpg"}]}'
+
+var obj = JSON.parse(txt);
+//document.getElementById("demo").innerHTML = obj.Data[1].first_name + " " + obj.Data[2].last_name;
+var attachdetail = obj["Data"];
+
+for(item in attachdetail)
+//for(var i=0;i<=attachdetail.length;i++)
+{
+    debugger;
+    alert("Hello");
+    console.log(table);
+ alert   (attachdetail[item].id);
+ alert(attachdetail[item].first_name);
+ alert(attachdetail[item].last_name);
+ alert (attachdetail[item].avator);
+}
+    debugger;
+    var table = document.getElementById("DemoTable");
+         var tr = document.createElement("tr");
+         var td = document.createElement("td");
+         for(key in attachdetail[item])
+          {
+              var text = document.createTextNode(key);
+              td.appendChild(text);
+              tr.appendChild(td);
+          }
+          table.appendChild(tr);
+ document.getElementById('demo').appendChild(table);
+</script>
+<style>
+table th,td{
+    border :  1px solid black;
+}</style>
+<div>
+<table id = "DemoTable">
+
+</table>
+</div>        
+</body>
+</html>
