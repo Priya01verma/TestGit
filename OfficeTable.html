@@ -1,0 +1,119 @@
+	
+<!doctype Html>
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        h1 {
+            margin-top: 50px;
+        }
+
+        .first-h1 {
+            margin-top: 100px;
+        }
+    table{
+        border-collapse:collapse;
+    }
+    table th, table td{
+        padding: 5px;
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar-fixed-top navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Hitech CRM</a>
+            </div>
+            <div>
+                <!-- <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="#intro">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul> -->
+            </div>
+        </div>
+    </nav><!-- /.navbar -->
+    <!-- Section 1 -->
+    <section>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 style="margin-top:60px;">Table</h2>
+                </div>
+                <div class="col-sm-12">
+                    <table class="table-responsive" border="1">
+                        <thead>
+                            <th>Full Name</th>
+                            <th>Office Mail ID</th>
+                            <th>Mobile Number</th>
+                            <th>officeNo</th>
+                            <th>Designation</th>
+                            <th>Created Date</th>
+                            <th>Modified Date</th>
+                            <th>Created By</th>
+                            <th>Modified By</th>
+                        </thead>
+                        <tbody id="tablebody">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script> 
+        $(document).ready(function(){
+          
+            $.ajax({
+               
+                    type: 'POST',
+                    url:"https://awsdev.globalhuntindia.com/api/getToken/",
+                    dataType:'json',
+                    data: {"username":"balraj","password":"Pass@123"},
+                    success: function (response){
+                        debugger
+                        var dataresult1 = JSON.parse(JSON.stringify(response)); 
+                        var token=dataresult1.accessToken;
+                        $.ajax({
+                               url:"https://awsdev.globalhuntindia.com/api/contacts/",
+                               type:"GET",
+                               headers: {'token': token},
+                            //    crossDomain : true,
+                            //    origin: "*",
+                               contentType:'application/json; charset=utf-8',
+                               dataType:'json',
+                               success:function(response1)
+                               {
+                                   debugger;
+                                var dataresult=JSON.parse(JSON.stringify(response1));
+                                var result = dataresult.results;
+                                var tablerow="";
+                                 for(var i=0;i<result.length;i++){
+                              tablerow+="<tr>"
+                                 +"<td>"+ result[i].fullName + "</td>"
+                                 +"<td>"+ result[i].officeEmailID + "</td>"
+                                 +"<td>"+ result[i].mobileNo + "</td>"
+                                +"<td>"+ result[i].officeNo + "</td>"
+                                +"<td>"+ result[i].designation + "</td>"
+                                +"<td>"+ result[i].createdDate + "</td>"
+                                +"<td>"+ result[i].modifiedDate + "</td>"
+                                +"<td>"+ result[i].createdBy + "</td>"
+                                +"<td>"+ result[i].modifiedBy + "</td>"
+                                 +"<tr>";
+                                 }
+                                 $("#tablebody").append(tablerow);
+                               },
+                        });
+                    },
+                }
+            )
+        });
+
+    </script>
+</body>
+
