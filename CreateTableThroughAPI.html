@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        CallAPI
+    </title>
+</head>
+<style>
+        table, th,td{
+            border :  1px solid black;
+        }</style>
+<body>
+    <p id ="demo"></p>
+</body>
+    <script>
+const Http = new XMLHttpRequest();
+const url = 'https://reqres.in/api/users?page=2'; 
+Http.open("GET",url);
+Http.send();
+Http.onreadystatechange= function() 
+{
+    if(this.readyState==4 && this.status==200)
+    {
+    console.log(Http.responseText)
+    }
+}
+
+var txt = [ 
+{"id":4,"first_name":"Eve","last_name":"holt","avator": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg"},
+{"id":5,"first_name":"Charles","last_name":"Morris","avator": "https://s3.amazonaws.com/uifaces/faces/twitter/stephenmoon/128.jpg"},
+{"id":6,"first_name":"Tracey","last_name":"Ramos","avator":  "https://s3.amazonaws.com/uifaces/faces/twitter/bigmancho/128.jpg"}]
+// extract value for html header
+var col=[];
+for ( var i=0;i<txt.length;i++ ){
+
+    for(var key in txt[i])
+    {
+        if (col.indexOf(key) === -1) 
+        {
+            col.push(key);
+        }
+    }
+}
+// create Dynamic table
+var table = document.createElement("table");
+// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+var tr = table.insertRow(-1);    //table row
+//create header
+for(var i=0;i<col.length;i++)
+{
+var th = document.createElement("th");
+th.innerHTML = col[i];
+tr.appendChild(th);
+}
+//Add JSON table as Rows
+for(var i=0;i<txt.length;i++)
+{
+     tr = table.insertRow(-1);
+    for(var j=0;j<col.length;j++)
+    {
+        var tableCell = tr.insertCell(-1);
+        tableCell.innerHTML = txt[i][col[j]];
+    }
+}
+// ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+var container = document.getElementById("demo");
+container.innerHTML = "";
+container.appendChild(table);
+    </script>
+</html>
