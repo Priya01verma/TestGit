@@ -1,0 +1,531 @@
+@model IEnumerable<WebApplication1.Models.Employee>
+
+    @{
+        ViewBag.Title = "Index";
+    }
+    
+    <h2>Index</h2>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    
+    <script>
+    
+        $(document).ready(function () {
+            // for paging
+            $.fn.pageMe = function (opts) {
+                debugger;
+                var $this = this,
+                    defaults = {
+                        perPage: 2,
+                        showPrevNext: false,
+                        hidePageNumbers: false
+                    },
+                    settings = $.extend(defaults, opts);
+    
+                var listElement = $this;
+                var perPage = settings.perPage;
+                var children = listElement.children();
+                var pager = $('.pager');
+    
+                if (typeof settings.childSelector != "undefined") {
+                    children = listElement.find(settings.childSelector);
+                }
+    
+                if (typeof settings.pagerSelector != "undefined") {
+                    pager = $(settings.pagerSelector);
+                }
+    
+                var numItems = children.size();
+                var numPages = Math.ceil(numItems / perPage);
+    
+                pager.data("curr", 0);
+    
+                if (settings.showPrevNext) {
+                    $('<li><a href="#" class="prev_link">«</a></li>').appendTo(pager);
+                }
+    
+                var curr = 0;
+                while (numPages > curr && (settings.hidePageNumbers == false)) {
+                    $('<li><a href="#" class="page_link">' + (curr + 1) + '</a></li>').appendTo(pager);
+                    curr++;
+                }
+    
+    
+    
+    
+    
+                if (settings.showPrevNext) {
+                    $('<li><a href="#" class="next_link">»</a></li>').appendTo(pager);
+                }
+    
+                pager.find('.page_link:first').addClass('active');
+                pager.find('.prev_link').hide();
+                if (numPages <= 1) {
+                    pager.find('.next_link').hide();
+                }
+                pager.children().eq(1).addClass("active");
+    
+                children.hide();
+                children.slice(0, perPage).show();
+    
+                pager.find('li .page_link').click(function () {
+                    var clickedPage = $(this).html().valueOf() - 1;
+                    goTo(clickedPage, perPage);
+                    return false;
+                });
+                pager.find('li .prev_link').click(function () {
+                    previous();
+                    return false;
+                });
+                pager.find('li .next_link').click(function () {
+                    next();
+                    return false;
+                });
+    
+                function previous() {
+                    var goToPage = parseInt(pager.data("curr")) - 1;
+                    goTo(goToPage);
+                }
+    
+                function next() {
+                    goToPage = parseInt(pager.data("curr")) + 1;
+                    goTo(goToPage);
+                }
+                $('<li>' + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total page" + '</li>').appendTo("#myPager");
+                $('<li >' + (curr) + '</li>').appendTo("#myPager");
+    
+                function goTo(page) {
+                    var startAt = page * perPage,
+                        endOn = startAt + perPage;
+    
+                    children.css('display', 'none').slice(startAt, endOn).show();
+    
+                    if (page >= 1) {
+                        pager.find('.prev_link').show();
+                    }
+                    else {
+                        pager.find('.prev_link').hide();
+                    }
+    
+                    if (page < (numPages - 1)) {
+                        pager.find('.next_link').show();
+                    }
+                    else {
+                        pager.find('.next_link').hide();
+                    }
+    
+                    pager.data("curr", page);
+                    pager.children().removeClass("active");
+                    pager.children().eq(page + 1).addClass("active");
+    
+                }
+            };
+    
+    
+            //$.ajax({
+            //    type: "GET",
+            //    url: "https://reqres.in/api/users?page=2",
+            //    async: false,
+            //    success: function (text) {
+            //        debugger;
+            //        var s = text;
+            //        $.each(text, function (index, value) {
+            //            $.each(value, function (index1, value1) {
+            //                tr = $('<tr/>');
+            //                tr.append("<td class=center>" + value1.id + "</td>");
+            //                tr.append("<td class=center>" + value1.first_name + "</td>");
+            //                tr.append("<td class=center>" + value1.last_name + "</td>");
+            //                tr.append("<td class=center>" + value1.avatar + "</td>");
+            //                $('#tbody').append(tr);
+            //            });
+            //        });
+    
+            //    }
+            //});
+            $.ajax({
+                type: "GET",
+                url: "https://jsonplaceholder.typicode.com/posts",
+                async: false,
+                success: function (text) {
+    
+    
+                    var count = 0;
+                    $.each(text, function (index, value) {
+                        tr = $('<tr/>');
+                        tr.append("<td class=center>" + value.userId + "</td>");
+                        tr.append("<td class=center>" + value.id + "</td>");
+                        tr.append("<td class=center>" + value.title + "</td>");
+                        tr.append("<td class=center>" + value.body + "</td>");
+                        $('#tbody').append(tr);
+                        count++;
+    
+    
+                    });
+                    //$("#dropdownlist").val("count");
+                    //debugger;
+                    //$("#dropdownlist").append($("<option/>").val(this.count).text(this.count));
+    
+    
+                }
+            });
+    
+            //var json = [{ "id": 1, "first_name": "Eve", "last_name": "Holt", "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg" }, { "id": 2, "first_name": "Charles", "last_name": "Morris", "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/stephenmoon/128.jpg" }, { "id": 3, "first_name": "Tracey", "last_name": "Ramos", "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/bigmancho/128.jpg" }, { "id": 4, "first_name": "angel", "last_name": "catty", "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg" }, { "id": 5, "first_name": "martin", "last_name": "jay", "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg" }, { "id": 6, "first_name": "dave", "last_name": "saad", "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg" }, { "id": 7, "first_name": "cally", "last_name": "david", "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg" }, { "id": 9, "first_name": "d0lly", "last_name": "darvine", "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg" }];
+            //var tr;
+            //for (var i = 0; i < json.length; i++) {
+            //    tr = $('<tr/>');
+            //    tr.append("<td class=center>" + json[i].id + "</td>");
+            //    tr.append("<td class=center>" + json[i].first_name + "</td>");
+            //    tr.append("<td class=center>" + json[i].last_name + "</td>");
+            //    tr.append("<td class=center>" + json[i].avatar + "</td>");
+            //    $('#tbody').append(tr);
+            //}
+            // for sorting
+            $('th').each(function (col) {
+                $(this).hover(
+                        function () {
+                            $(this).addClass('focus');
+                        },
+                        function () {
+                            $(this).removeClass('focus');
+                        }
+                );
+                $(this).click(function () {
+                    if ($(this).is('.asc')) {
+                        $(this).removeClass('asc');
+                        $(this).addClass('desc selected');
+                        sortOrder = -1;
+                    } else {
+                        $(this).addClass('asc selected');
+                        $(this).removeClass('desc');
+                        sortOrder = 1;
+                    }
+                    $(this).siblings().removeClass('asc selected');
+                    $(this).siblings().removeClass('desc selected');
+                    var arrData = $('table').find('tbody >tr:has(td)').get();
+                    arrData.sort(function (a, b) {
+                        var val1 = $(a).children('td').eq(col).text().toUpperCase();
+                        var val2 = $(b).children('td').eq(col).text().toUpperCase();
+                        if ($.isNumeric(val1) && $.isNumeric(val2))
+                            return sortOrder == 1 ? val1 - val2 : val2 - val1;
+                        else
+                            return (val1 < val2) ? -sortOrder : (val1 > val2) ? sortOrder : 0;
+                    });
+                    $.each(arrData, function (index, row) {
+                        $('#tbody').append(row);
+                    });
+    
+                });
+            });
+    
+            $("#search").keyup(function () {
+                var value = this.value.toLowerCase().trim();
+    
+    
+                $("table tr").each(function (index) {
+    
+                    if (!index) return;
+                    $(this).find("td").each(function () {
+                        var id = $(this).text().toLowerCase().trim();
+                        var not_found = (id.indexOf(value) == -1);
+    
+    
+                        //var first_name = $(this).text().toLowerCase().trim();
+                        //var not_found = (first_name.indexOf(value) ==-1);
+                        $(this).closest('tr').toggle(!not_found);
+                        return not_found;
+                    });
+                });
+            });
+            $("#userid").keyup(function () {
+                var value = this.value.toLowerCase().trim();
+    
+                debugger;
+    
+    
+                $(" table tr").find("td:eq(0)").each(function () {
+                    debugger;
+                    var id = $(this).text().toLowerCase().trim();
+                    var not_found = (id.indexOf(value) == -1);
+    
+    
+    
+                    $(this).closest('tr').toggle(!not_found);
+                    return not_found;
+                });
+    
+    
+            });
+            $("#Id").keyup(function () {
+                var value = this.value.toLowerCase().trim();
+                debugger;
+    
+    
+                $("tr").find("td:eq(1)").each(function () {
+                    debugger;
+                    var id = $(this).text().toLowerCase().trim();
+                    var not_found = (id.indexOf(value) == -1);
+    
+    
+                    $(this).closest('tr').toggle(!not_found);
+                    return not_found;
+                    $("#tbodt").show();
+    
+                });
+            });
+            $("#title").keyup(function () {
+                var value = this.value.toLowerCase().trim();
+    
+    
+    
+                $("tr").find("td:eq(2)").each(function () {
+                    debugger;
+                    var id = $(this).text().toLowerCase().trim();
+                    var not_found = (id.indexOf(value) == -1);
+    
+    
+    
+                    $(this).closest('tr').toggle(!not_found);
+                    return not_found;
+                });
+            });
+            $("#body").keyup(function () {
+                var value = this.value.toLowerCase().trim();
+                debugger;
+    
+    
+                $("tr").find("td:eq(3)").each(function () {
+                    debugger;
+                    var id = $(this).text().toLowerCase().trim();
+                    var not_found = (id.indexOf(value) == -1);
+    
+                    $(this).closest('tr').toggle(!not_found);
+                    return not_found;
+    
+    
+                    //$(this).find("td").each(function () {
+                    //    var id = $(this).text().toLowerCase().trim();
+                    //    var not_found = (id.indexOf(value) == -1);
+    
+                    //    debugger;
+                    //    //var first_name = $(this).text().toLowerCase().trim();
+                    //    //var not_found = (first_name.indexOf(value) ==-1);
+                    //    $(this).closest('tr').toggle(!not_found);
+                    //    return not_found;
+                    //});
+                });
+            });
+            // for Entery
+            $("#dropdownlist").change(function () {
+                debugger;
+                $("#myPager li").remove();
+    
+                var Enter = parseInt($("#dropdownlist").val());
+                $("#tbody").pageMe({ pagerSelector: "#myPager", showPrevNext: true, hidePageNumbers: false, perPage: Enter });
+    
+    
+            });
+    
+            $("table th").addClass("headerSortUp");
+            $("#tbody").pageMe({ pagerSelector: "#myPager", showPrevNext: true, hidePageNumbers: false, perPage: 5 });
+    
+    
+    
+        });
+    
+    </script>
+    <style>
+        /*table.dataTable thead .sorting::after,
+        table.dataTable thead .sorting_asc::after {
+            content: "\e252";
+        }*/
+    
+        a:link {
+            color: blue;
+        }
+    
+        a:visited {
+            color: #00FF00;
+        }
+    
+        a:hover {
+            color: #FF00FF;
+        }
+    
+    
+        a:focus {
+            opacity: 2;
+            font-size: 24px;
+        }
+    
+        /*table.dataTable thead .sorting_desc::after {
+            content: "\e253";
+        }*/
+    
+        .center {
+            text-align: center;
+        }
+    
+        th {
+            cursor: pointer;
+            font-size: 14px;
+        }
+    
+        table {
+            font-family: "Arial";
+            font-size: 14px;
+            text-align: left;
+            vertical-align: middle;
+        }
+    
+    
+            table td {
+                padding-left: 0px;
+            }
+    
+            table th {
+                padding: 0 25px 0 25px;
+            }
+    
+        .maintbl {
+            font-size: 18px;
+            vertical-align: middle;
+            text-align: center;
+        }
+    
+            .maintbl tr:nth-child(even) {
+                background-color: #BCDFF5;
+            }
+    
+            .maintbl tr:nth-child(odd) {
+                background-color: #DEEFFA;
+            }
+    
+        .Up {
+            background: url("data:image/gif;base64, R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==") no-repeat 99%;
+        }
+    
+    
+    
+        table thead tr {
+            background-repeat: no-repeat;
+            background-position: center right;
+            cursor: pointer;
+        }
+    
+        .dropdownlist {
+            width: 250px;
+            height: 40px;
+            border-radius: 3px;
+        }
+        /*for navigation tab*/
+    
+    
+    
+    
+        .access ul {
+            font-size: 10px;
+            list-style: none;
+            margin: 0 0 0 -0.8125em;
+            padding-left: 0;
+        }
+    
+        .access li {
+            position: relative;
+            padding-left: 10px;
+            margin: 0 0 3px 0;
+        }
+    
+        .access a {
+            background: #0f84e8; /* Show a solid color for older browsers */
+            color: #eee;
+            border-radius: 5px;
+            display: block;
+            line-height: 1;
+            padding: 5px 5px 5px 5px;
+            text-decoration: none;
+        }
+    
+    
+    
+    </style>
+    <div>
+        <input type="text" class="dropdownlist" placeholder="search" id="search" />
+        @{
+            List<SelectListItem> item = new List<SelectListItem>();
+    
+            item.Add(new SelectListItem { Text = "5 Row", Value = "5", Selected = true });
+            item.Add(new SelectListItem { Text = "10 Row", Value = "10" });
+            item.Add(new SelectListItem { Text = "20 Row", Value = "20" });
+            item.Add(new SelectListItem { Text = "50 Row", Value = "50" });
+    
+    
+        }
+        Number of: @Html.DropDownList("dropdownlist", item, new { @class = "dropdownlist" })
+    </div>
+    
+    @*<div class="container">
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-hover" border="0" id="table_id">
+                        <thead>
+                            <tr>
+                                <th class="center maintbl" id="id">Id</th>
+                                <th class="center maintbl" id="firstname">First Name</th>
+                                <th class="center maintbl" id="lastname">Last name</th>
+                                <th class="center maintbl">Avatar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+    
+            <div class="col-md-12 text-center
+                 " style="text-align:right" id="divRemove">
+                <ul class="pagination pagination-lg pager" style="font-weight:900" id="myPager"></ul>
+            </div>
+        </div>*@
+    
+    <div class="container fixed_headers" id="wrapper">
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-hover fixed_headers" border="1" id="table_id">
+                    <thead>
+                        <tr>
+                            <th class="center maintbl Up" style="width:100px" id="id">UserId</th>
+                            <th class="center maintbl Up" style="width:60px" id="id">Id</th>
+                            <th class="center maintbl Up">Title</th>
+                            <th class="center maintbl Up">Body</th>
+                        </tr>
+                        <tr>
+                            <th><input type="text" style="border-top:none;border-left:none;border-right:none" placeholder="search" id="userid" /></th>
+                            <th><input type="text" style="border-top:none;border-left:none;border-right:none" placeholder="search" id="Id" /></th>
+                            <th><input type="text" style="border-top:none;border-left:none;border-right:none" placeholder="search" id="title" /></th>
+                            <th><input type="text" style="border-top:none;border-left:none;border-right:none" placeholder="search" id="body" /></th>
+    
+    
+    
+    
+                        </tr>
+    
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-12 text-center" style="text-align:right" id="divRemove">
+            <ul class="pagination pagination-lg pager access row" style="font-weight:900;text-align:end" id="myPager">page </ul>
+    
+    
+        </div>
+    
+    </div>
